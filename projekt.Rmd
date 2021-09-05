@@ -90,6 +90,13 @@ Naredila sem 6 grafov, med drugim histogram in tortni diagram ter 4 zemljevide.
 
 ## Število nastopov držav
 
+```{r graf6, echo=FALSE, message=FALSE, warning=FALSE, fig.width=10, fig.align='center'}
+print(graf6)
+```
+
+```{r zemljevid1, echo=FALSE, message=FALSE, warning=FALSE, fig.align='center'}
+print(zemljevid1)
+```
 
 Tortni diagram, ki prikazuje kolikokrat so posamezne države nastopile. Države so
 razdeljene v 8 razredov pogostosti nastopa, saj bi bilo sicer preveč spremenljivk

@@ -12,14 +12,18 @@ shinyUI(fluidPage(
     tabPanel("Glasovanje Jugoslavija",
              sidebarPanel(
                
-               selectInput("drzava", label = "Izberite državo:",
-                           choices=(sort(unique(tabela3$Drzava))))),
+               selectInput("drzava1", label = "Izberite državo:",
+                           choices=sort(unique(df4$Drzava)))),
              
              mainPanel(plotOutput("tocke"))),
+    
     tabPanel("Glasovanje Slovenija",
+             
              sidebarPanel(
-               selectInput("drzava", label = "Izberite državo:",
-                           choices=(sort(unique(tabela4$Drzava))))),
+               
+               selectInput("drzava2", label = "Izberite državo:",
+                           choices=sort(unique(tabela4$Drzava)))),
+             
              mainPanel(plotOutput("tocke2"))),
     
     uiOutput("izborTabPanel")))

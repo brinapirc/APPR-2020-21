@@ -5,7 +5,7 @@ tabela3[-dv2,] %>% group_by(Drzava)
 
 # komu v povprečju najvec: tabela5$Stevilo_nastopov in tabela
 
-# pod9 <- tabela5[-which(tabela5$Stevilo_nastopov + tabela5$Prvi_nastop < 1993),]
+pod9 <- tabela5[-which(tabela5$Stevilo_nastopov + tabela5$Prvi_nastop < 1993),]
 
 # komu smo dali max točke in kdo je zmagal SLO
 df1 <- tabela4 %>% group_by(Leto) %>% filter(Tocke == max(Tocke))

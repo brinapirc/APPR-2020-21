@@ -23,7 +23,10 @@ podatki_jugoslavija <- nastopi_jugoslavija %>%
   as.data.frame() %>%
   separate(X4, c("TOCKE", "UVRSTITEV"), sep = " points") %>%
   separate(X1, c("KRAJ", "LETO"), sep = " ")
+
 # podatki_jugoslavija %>% View
+#podatki_jugoslavija %>% View
+
 colnames(podatki_jugoslavija) <- c("KRAJ", "LETO", "NASTOPAJOCI", "NASLOV_PESMI", "TOCKE", "UVRSTITEV")
 
 # enkrat je uvrstitev pri točkah:
@@ -31,7 +34,7 @@ podatki_jugoslavija$UVRSTITEV[4] <- podatki_jugoslavija$TOCKE[4]
 podatki_jugoslavija$TOCKE[4] <- ""
 
 # popravki
-podatki_jugoslavija$NASTOPAJOCI <- gsub("\\.", "s", podatki_jugoslavija$NASTOPAJOCI)
+podatki_jugoslavija$NASTOPAJOCI <- gsub("Eva Sr\\.en", "Eva Srsen", podatki_jugoslavija$NASTOPAJOCI)
 podatki_jugoslavija$UVRSTITEV <- gsub("\\D", "", podatki_jugoslavija$UVRSTITEV)
 podatki_jugoslavija$KRAJ <- gsub("The", "The Hague", podatki_jugoslavija$KRAJ)
 podatki_jugoslavija$LETO <- gsub("Hague", 1976, podatki_jugoslavija$LETO)
@@ -46,7 +49,11 @@ podatki_slovenija <- nastopi_slovenija %>%
   separate(X4, c("TOCKE", "UVRSTITEV"), sep = " points") %>%
   separate(X1, c("KRAJ", "LETO"), sep = " ")
 
+
 # podatki_slovenija %>% View
+
+#podatki_slovenija %>% View
+
 colnames(podatki_slovenija) <- c("KRAJ", "LETO", "NASTOPAJOCI", "NASLOV_PESMI", "TOCKE", "UVRSTITEV")
 podatki_slovenija$UVRSTITEV <- gsub("\\D", "", podatki_slovenija$UVRSTITEV)
 
@@ -193,7 +200,12 @@ for (j in 1:4) {
 }
 
 for (i in 1:4){
+
   slovenija_zadnje4_2[[i]] <- data.frame(w[[i]], z[[i]], stringsAsFactors = FALSE) %>% rename("Points given" = w..i.., "Country" = z..i..)
+
+  slovenija_zadnje4_2[[i]] <- data.frame(w[[i]], z[[i]], stringsAsFactors=FALSE) %>%
+    rename("Points given" = w..i.., "Country" = z..i..)
+
 }
 
 
@@ -216,12 +228,13 @@ leto <- c(podatki_jugoslavija$LETO, podatki_slovenija$LETO)
 prireditve <- paste(kraj, leto, sep = " ")
 
 # dodamo države, ki so kadarkoli sodelovale
-link_drzave <- read_html("https://eurovision.tv/countries")
+source("uvoz/drzave.r", encoding="UTF-8")
 
 prevod <- function(x) {
   countrycode(x, origin = 'country.name', destination = 'cldr.name.sl',
               custom_match = c("Serbia & Montenegro" = "Srbija in Črna Gora", "Yugoslavia" = "Jugoslavija"))
 }
+
 
 drzave <- link_drzave %>%
   html_nodes(xpath = "//div[@class='flex flex-wrap']//h4[@class='font-bold text-xl leading-tight group-hover:text-blue-600']") %>%
@@ -274,7 +287,11 @@ for (j in 1:16) {
   }
 }
 
+
 # View(tabela)
+
+# View(tabela)
+
 
 
 # v bistvu je smiselno to gledat za jugoslavijo in slovenijo posebej
@@ -288,29 +305,7 @@ tabela_slovenija <- tabela[c(28:52),]
 #### 4. del: tabela za vse države - prvi nastop in število nastopov
 ################################################################################
 
-# povezave_drzave <- paste("https://eurovision.tv/country/", tolower(gsub("\\W+", "-", vektor_drzave)), sep = '')
-# 
-# 
-# nastopi_drzave <-lapply(povezave_drzave, function(x) {read_html(x) %>%
-#     html_nodes(xpath = "//div[@class='space-y-4']//dd[@class='text-sm font-bold']") %>%
-#     html_text () %>%
-#     .[[3]] %>%
-#     lapply(function(x) {gsub("\n", "", x)})
-# }) %>% unlist() %>% as.numeric()
-# 
-# # to je število nastopov vseh držav
-# 
-# # prvi nastop vseh držav
-# 
-# prvic_drzave <-lapply(povezave_drzave, function(x) {read_html(x) %>%
-#     html_nodes(xpath = "//div[@class='space-y-4']//dd[@class='text-sm font-bold']") %>%
-#     html_text () %>%
-#     .[[4]] %>%
-#     lapply(function(x) {regmatches(x, regexpr("\\d{4}", x))})
-# }) %>% unlist() %>% as.numeric()
-# 
-# tabela_nastopi <- data.frame("Drzava" = drzave, "Stevilo_nastopov" = nastopi_drzave, "Prvi_nastop" = prvic_drzave)
-
+tabela_nastopi <- read_csv("podatki/tabela_nastopi.csv")
 
 ################################################################################
 #### 5. del: vsi zmagovalci
@@ -352,8 +347,8 @@ tabela_slovenija <- tabela_slovenija %>%
 tabela4 <- tabela_slovenija
 
 # 5
-# tabela5 <- tabela_nastopi
-# tabela_nastopi_1 <- tabela_nastopi %>% pivot_longer(2:3)
+tabela5 <- tabela_nastopi
+tabela_nastopi_1 <- tabela_nastopi %>% pivot_longer(2:3)
 
 # 6
 pod_zmagovalci
