@@ -5,7 +5,7 @@ library(tmap)
 
 
 # Uvozimo zemljevid.
-zemljevid <- uvozi.zemljevid("http://www.naturalearthdata.com/http//www.naturalearthdata.com/download/50m/cultural/ne_50m_admin_0_countries.zip", "ne_50m_admin_0_countries", encoding="UTF-8")
+zemljevid <- uvozi.zemljevid("http://baza.fmf.uni-lj.si/ne_50m_admin_0_countries.zip", "ne_50m_admin_0_countries", encoding="UTF-8")
 zemljevid <- zemljevid[zemljevid$CONTINENT == "Europe",]
 
 dv <- c("Albania", "Andorra", "Armenia", "Australia", "Azerbaijan", "Belarus",
@@ -62,31 +62,33 @@ graf3 <- ggplot(data=rbind(tabela1, df3[-c(7,8,9)]), aes(x=as.numeric(LETO), y=a
 
 #______________________________________2________________________________________
 
-# katera država je dobila najvecč točk za vsako leto
+# katera država je dobila največ točk za vsako leto
 # ju
 pod3 <- tabela3 %>% group_by(Leto) %>% filter(Tocke == max(Tocke))
 pod5 <- as.data.frame(sort(table(pod3$Drzava), decreasing=TRUE))
 
+pod3$Drzava <- countrycode(pod3$Drzava, origin = 'country.name', destination = 'ecb')
 pod3 <- within(pod3, 
                    Drzava <- factor(Drzava, 
                                       levels=names(sort(table(Drzava), 
                                                         decreasing=TRUE))))
 
 graf4 <- ggplot(pod3,aes(x=Drzava)) +
-  geom_bar(binwidth=1) +
+  geom_bar(fill = "coral") +
   xlab("Država") +
   ylab("Število dogodkov največ točk") +
   ggtitle("Pogostost dajanja največ točk")
 
 # sl
 pod4 <- tabela4 %>% group_by(Leto) %>% filter(Tocke == max(Tocke))
+pod4$Drzava <- countrycode(pod4$Drzava, origin = 'country.name', destination = 'ecb')
 pod4 <- within(pod4, 
                Drzava <- factor(Drzava, 
                                 levels=names(sort(table(Drzava), 
                                                   decreasing=TRUE))))
 pod6 <- as.data.frame(sort(table(pod4$Drzava), decreasing=TRUE))
 graf5 <- ggplot(pod4,aes(x=Drzava)) +
-  geom_bar() +
+  geom_bar(fill = "coral") +
   xlab("Država") +
   ylab("Število dogodkov največ točk") +
   ggtitle("Pogostost dajanja največ točk")
@@ -97,10 +99,10 @@ graf5 <- ggplot(pod4,aes(x=Drzava)) +
 #                              cut(Stevilo_nastopov, breaks = c(0,1,10,20,30,40,50,60,70),
 #                                           right = T, labels = F))
 
-r <- 0
-for (i in 1:8){
-  r[i] <- sum(pod7$Stevilo_nastopov == i)
-}
+# r <- 0
+# for (i in 1:8){
+#   r[i] <- sum(pod7$Stevilo_nastopov == i)
+# }
 
 # pod8 <- as.data.frame(cbind("Skupina" = c(1:8),"Stevilo" = r))
 # filter(pod7, Stevilo_nastopov == 5)$Drzava
@@ -160,35 +162,7 @@ for (i in 1:8){
 #   tm_layout(bg.color = "skyblue") + 
 #   tm_layout(main.title = "Število nastopov posameznih držav", main.title.size = 1, legend.title.size = 1) 
 # 
-#____________________________________5__________________________________________
-
-# zemljevid2 <- tm_shape(merge(zemljevid,
-#                              pod5,duplicateGeoms = TRUE,
-#                              by.x="SOVEREIGNT", by.y="Var1"),
-#                        xlim=c(-25,40), ylim=c(32,72)) +
-#   tm_polygons("Freq", title = "Število nastopov")+
-#               #breaks=c(0,10,20,30,40,50,60,65)) + 
-#   tm_layout(bg.color = "skyblue") + 
-#   tm_layout(main.title = "Najvišja vsota podeljenih točk", main.title.size = 1, legend.title.size = 1)
-# 
-# tabela7 <- pod6 %>% rename("Drzava" = Var1, "Stevilo" = Freq)
-# 
-# tabela7$Drzava[tabela7$Drzava == Bosnia & Herzegovina] <- wicdj
-# tabela7$Drzava <- recode_factor(tabela7$Drzava, "Bosnia & Herzegovina" = "Bosnia and Herzegovina",
-#                                 "Serbia" = "Republic of Serbia", "Serbia & Montenegro" = "Republic of Serbia",
-#                                 "North Macedonia" = "Macedonia")
-# tabela7 <- tabela7 %>% group_by(Drzava) %>% summarise(Stevilo = sum(Stevilo))
-# 
-# 
-# zemljevid3 <- tm_shape(merge(zemljevid,
-#                              tabela7,duplicateGeoms = TRUE,
-#                              by.x="SOVEREIGNT", by.y="Drzava"),
-#                        xlim=c(-25,40), ylim=c(32,72)) +
-#   tm_polygons("Stevilo", title = "Število nastopov")+
-#   tm_layout(bg.color = "skyblue") + 
-#   tm_layout(main.title = "Najvišja vsota podeljenih točk", main.title.size = 1, legend.title.size = 1)
-
-#________________________________6______________________________________________
+#________________________________5______________________________________________
 tabela8 <- tabela3[-dv2,] %>% group_by(Drzava) %>% summarise(Vsota = sum(Tocke)) %>%
   mutate(Drzava = recode(Drzava, "Bosnia & Herzegovina" = "Bosnia and Herzegovina",
                 "Serbia" = "Republic of Serbia", "Serbia & Montenegro" = "Republic of Serbia",
@@ -216,7 +190,7 @@ zemljevid5 <- tm_shape(merge(zemljevid,
                        xlim=c(-25,40), ylim=c(32,72)) +
   tm_polygons("Vsota", title = "Število točk", breaks = c(0,1,20,40,60,80,100,120,140)) +
   tm_layout(bg.color = "skyblue") + 
-  tm_layout(main.title = "Vsota podeljenih točk", main.title.size = 1, legend.title.size = 1)
+  tm_layout(main.title = "Vsota podeljenih točk Slovenija", main.title.size = 1, legend.title.size = 1)
 
 
 

@@ -9,13 +9,18 @@ shinyUI(fluidPage(
              DT::dataTableOutput("tabela")),
     
     
-    tabPanel("Rezultati za Jugoslavijo",
+    tabPanel("Glasovanje Jugoslavija",
              sidebarPanel(
                
                selectInput("drzava", label = "Izberite državo:",
                            choices=(sort(unique(tabela3$Drzava))))),
              
              mainPanel(plotOutput("tocke"))),
+    tabPanel("Glasovanje Slovenija",
+             sidebarPanel(
+               selectInput("drzava", label = "Izberite državo:",
+                           choices=(sort(unique(tabela4$Drzava))))),
+             mainPanel(plotOutput("tocke2"))),
     
     uiOutput("izborTabPanel")))
   

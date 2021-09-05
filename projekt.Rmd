@@ -33,7 +33,7 @@ Pri projektu me je zanimalo, kako Slovenija glasuje na tekmovanju za Pesem Evrov
 
 # Obdelava, uvoz in čiščenje podatkov
 
-```{r uvoz}
+```{r uvoz, results='hide'}
 source("uvoz/uvoz.r", encoding="UTF-8")
 ```
 
@@ -67,7 +67,6 @@ Podatke sem uvažala z uradne strani tekmovanja "Eurovision TV", eno tabelo pa s
   - `Drzava` - spremenljivka: drzava, ki je kadarkoli nastopila na tekmovanju,
   - `Tocke` - spremenljivka: število točk, ki smo jih podelili posamezni državi
 
-
 5. `tabela5` - podatki o glasovanju Slovenije
   - `Drzava` - spremenljivka: drzava, ki je kadarkoli nastopila na tekmovanju,
   - `Stevilo_nastopov` - spremenljivka: število vseh nastopov posamezne države,
@@ -90,14 +89,6 @@ source("vizualizacija/vizualizacija.r", encoding="UTF-8")
 Naredila sem 6 grafov, med drugim histogram in tortni diagram ter 4 zemljevide.
 
 ## Število nastopov držav
-
-```{r graf6, echo=FALSE, message=FALSE, warning=FALSE, fig.align='center'}
-print(graf6)
-```
-
-```{r zemljevid1, echo=FALSE, message=FALSE, warning=FALSE, fig.align='center'}
-print(zemljevid1)
-```
 
 
 Tortni diagram, ki prikazuje kolikokrat so posamezne države nastopile. Države so
@@ -160,9 +151,8 @@ Rusiji (nekaterim drugim po 1-krat). To je zanimivo z geopolitičnega vidika, sa
 glasujemo stalno za zmagovalne pesmi. Seveda bi bilo treba preveriti še, ali so se te države
 uvrščale visoko (le 2-krat od tega sta se Srbija in BiH uvrstili na 3. mesto).
 
-```{r zemljevid4, echo=FALSE, message=FALSE, warning=FALSE, fig.align='center'}
-print(zemljevid4)
-print(zemljevid5)
+```{r zemljevid45, echo=FALSE, message=FALSE, warning=FALSE, fig.align='center'}
+tmap_arrange(zemljevid4, zemljevid5)
 ```
 
 Tu vidimo podobno sliko kot zgoraj na histogramih, le da gre sedaj za vsoto podeljenih točk vsaki
@@ -185,7 +175,7 @@ statistično značilnost, bi lahko zaključili, da lahko s pesmijo v slovenšči
 za 3.49 mest boljši rezultat.
 
 Pogledala sem še, kako bi število nastopajočih in njihov spol vpliva na rezultat. Pri zasedbi sem
-gledala le ženski/moški spol ter več kot 1 nastopajočiv (duet, skupina). Tudi tu uvrstitev v finale
+gledala le ženski/moški spol ter več kot 1 nastopajoči (duet, skupina). Tudi tu uvrstitev v finale
 ni statistično odvisna od zasedbe, prav tako tudi ne končna uvrstitev. Če bi to zanemarili, bi lahko
 rekli, da samostojni ženski nastop prinaša boljšo uvrstitev od samostojnega moškega za 3.216 mest.
 v vsakem primeru pa je to neustrezen model, saj je večina nastopov samostojnih žensk, najmanj pa je
