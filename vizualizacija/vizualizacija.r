@@ -17,7 +17,7 @@ dv <- c("Albania", "Andorra", "Armenia", "Australia", "Azerbaijan", "Belarus",
 
 
 dv2 <- unlist(lapply(dv, function(x) {which(grepl(x, tabela3$Drzava))}))
-tabela3[-dv2,]
+df4 <- tabela3[-dv2,]
 
 
 #_____________________________1_________________________________________________
@@ -95,73 +95,64 @@ graf5 <- ggplot(pod4,aes(x=Drzava)) +
 
 
 #___________________________________3___________________________________________
-# pod7 <- tabela5 %>% mutate(Stevilo_nastopov =
-#                              cut(Stevilo_nastopov, breaks = c(0,1,10,20,30,40,50,60,70),
-#                                           right = T, labels = F))
-
-# r <- 0
-# for (i in 1:8){
-#   r[i] <- sum(pod7$Stevilo_nastopov == i)
-# }
-
-# pod8 <- as.data.frame(cbind("Skupina" = c(1:8),"Stevilo" = r))
+pod7 <- tabela5 %>% mutate(Stevilo_nastopov =
+                            cut(Stevilo_nastopov, breaks = c(0,1,10,20,30,40,50,60,70),
+                                         right = T, labels = F))
+r <- 0
+for (i in 1:8){
+ r[i] <- sum(pod7$Stevilo_nastopov == i)
+}
+pod8 <- as.data.frame(cbind("Skupina" = c(1:8),"Stevilo" = r))
 # filter(pod7, Stevilo_nastopov == 5)$Drzava
-# 
-# pod8 <- pod8 %>% 
-#   arrange(desc(Skupina)) %>%
-#   mutate(prop = Stevilo / sum(pod8$Skupina) *100) %>%
-#   mutate(ypos = cumsum(prop)- 0.5*prop )
-# 
-# 
-# graf6 <- ggplot(pod8, aes(x = factor(1), y = prop, fill = as.factor(Skupina))) +
-#   theme_void() +
-#   geom_bar(width=1,stat="identity", color="white") +
-#   ggtitle("Delež nastopov po državah") +
-#   theme(plot.title = element_text(hjust = 0.5), legend.key.size = unit(1.5, 'cm'),
-#         legend.text = element_text(size=12), legend.title = element_text(size=14)) +
-#   coord_polar("y", start=0) +
-#   scale_fill_discrete(name = "Skupina",
-#                       labels = c("Maroko",
-#                                  "Andora, Avstralija, Češka, Srbija in Črna Gora, Slovaška",
-#                                  "Albanija, Armenija, Azerbajdžan, Belorusija, BiH, Bolgarija, Gruzija, Madžarska,\nMoldavija, Črna Gora, Severna Makedonija, San Marino, Srbija, Ukrajina",
-#                                  "Hrvaška, Estonija, Latvija, Litva, Monako, Poljska, Romunija, Rusija, Slovenija,\nJugoslavija",
-#                                  "Ciper, Islandija, Luksemburg, Malta, Turčija",
-#                                  "Danska, Grčija, Izrael, Italija",
-#                                  "Avstrija, Finska, Irska, Norveška, Portugalska, Španija, Švedska",
-#                                  "Belgija, Francija,Nemčija, Švica, Nizozemska, Združeno kraljestvo")) +
-#   geom_text(aes(y = ypos, label = rev(c("1", "2-10", "11-20", "21-30", "31-40",
-#                                     "41-50", "51-60", "61-65"))), color = "white", size=5)
-# 
-# 
-# 
-# graf6
+pod8 <- pod8 %>%
+ arrange(desc(Skupina)) %>%
+ mutate(prop = Stevilo / sum(pod8$Skupina) *100) %>%
+ mutate(ypos = cumsum(prop)- 0.5*prop )
+graf6 <- ggplot(pod8, aes(x = factor(1), y = prop, fill = as.factor(Skupina))) +
+ theme_void() +
+ geom_bar(width=1,stat="identity", color="white") +
+ ggtitle("Delež nastopov po državah") +
+ theme(plot.title = element_text(hjust = 0.5), legend.key.size = unit(1, 'cm'),
+       legend.text = element_text(size=10), legend.title = element_text(size=12)) +
+ coord_polar("y", start=0) +
+ scale_fill_discrete(name = "Skupina",
+                     labels = c("Maroko",
+                                "Andora, Avstralija, Češka, Srbija in Črna Gora, Slovaška",
+                                "Albanija, Armenija, Azerbajdžan, Belorusija, BiH, Bolgarija, Gruzija, Madžarska,\nMoldavija, Črna Gora, Severna Makedonija, San Marino, Srbija, Ukrajina",
+                                "Hrvaška, Estonija, Latvija, Litva, Monako, Poljska, Romunija, Rusija, Slovenija,\nJugoslavija",
+                                "Ciper, Islandija, Luksemburg, Malta, Turčija",
+                                "Danska, Grčija, Izrael, Italija",
+                                "Avstrija, Finska, Irska, Norveška, Portugalska, Španija, Švedska",
+                                "Belgija, Francija,Nemčija, Švica, Nizozemska, Združeno kraljestvo")) +
+ geom_text(aes(y = ypos, label = rev(c("1", "2-10", "11-20", "21-30", "31-40",
+                                   "41-50", "51-60", "61-65"))), color = "white", size=5)
 
-
+graf6
 
 #_____________________________________4_________________________________________
-# tabela5$Drzava <- gsub("\n", "", tabela5$Drzava)
-# t <- c("Australia", "Serbia & Montenegro", "Yugoslavia")
-# t2 <- unlist(lapply(t, function(x) {match(x, tabela5$Drzava)}))
-# tabela6 <- tabela5[-t2,]
-# 
-# # spremenit države
-# tabela6$Drzava[tabela6$Drzava == "The Netherlands"] <- "Netherlands"
-# tabela6$Drzava[tabela6$Drzava == "Czech Republic"] <- "Czechia"
-# tabela6$Drzava[tabela6$Drzava == "Bosnia & Herzegovina"] <- "Bosnia and Herzegovina"
-# tabela6$Drzava[tabela6$Drzava == "Serbia"] <- "Republic of Serbia"
-# tabela6$Drzava[tabela6$Drzava == "North Macedonia"] <- "Macedonia"
-# 
-# 
-# 
-# zemljevid1 <- tm_shape(merge(zemljevid,
-#                              tabela6,duplicateGeoms = TRUE,
-#                              by.x="SOVEREIGNT", by.y="Drzava"),
-#                        xlim=c(-25,40), ylim=c(32,72)) +
-#   tm_polygons("Stevilo_nastopov", title = "Število nastopov",
-#               breaks=c(0,10,20,30,40,50,60,65)) + 
-#   tm_layout(bg.color = "skyblue") + 
-#   tm_layout(main.title = "Število nastopov posameznih držav", main.title.size = 1, legend.title.size = 1) 
-# 
+tabela5$Drzava <- gsub("\n", "", tabela5$Drzava)
+t <- c("Australia", "Serbia & Montenegro", "Yugoslavia")
+t2 <- unlist(lapply(t, function(x) {match(x, tabela5$Drzava)}))
+tabela6 <- tabela5[-t2,]
+
+# spremenit države
+tabela6$Drzava[tabela6$Drzava == "The Netherlands"] <- "Netherlands"
+tabela6$Drzava[tabela6$Drzava == "Czech Republic"] <- "Czechia"
+tabela6$Drzava[tabela6$Drzava == "Bosnia & Herzegovina"] <- "Bosnia and Herzegovina"
+tabela6$Drzava[tabela6$Drzava == "Serbia"] <- "Republic of Serbia"
+tabela6$Drzava[tabela6$Drzava == "North Macedonia"] <- "Macedonia"
+
+
+
+zemljevid1 <- tm_shape(merge(zemljevid,
+                             tabela6,duplicateGeoms = TRUE,
+                             by.x="SOVEREIGNT", by.y="Drzava"),
+                       xlim=c(-25,40), ylim=c(32,72)) +
+  tm_polygons("Stevilo_nastopov", title = "Število nastopov",
+              breaks=c(0,10,20,30,40,50,60,65)) +
+  tm_layout(bg.color = "skyblue") +
+  tm_layout(main.title = "Število nastopov posameznih držav", main.title.size = 1, legend.title.size = 1)
+
 #________________________________5______________________________________________
 tabela8 <- tabela3[-dv2,] %>% group_by(Drzava) %>% summarise(Vsota = sum(Tocke)) %>%
   mutate(Drzava = recode(Drzava, "Bosnia & Herzegovina" = "Bosnia and Herzegovina",
